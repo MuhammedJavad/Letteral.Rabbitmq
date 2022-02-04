@@ -42,7 +42,7 @@ namespace Letteral.Rabbitmq.Subscription
             where TEvent : IntegrationEvent
             where THandler : IConsumer<TEvent>
         {
-            var consumer = new AsyncEventingConsumer<TEvent, THandler>(Connection.CreateChannel(), _serviceResolver);
+            var consumer = new AsyncEventingConsumer<TEvent, THandler>(_channel, _serviceResolver);
             
             if (!TryAddInternalSubscription(amqp, consumer)) return false;
 
