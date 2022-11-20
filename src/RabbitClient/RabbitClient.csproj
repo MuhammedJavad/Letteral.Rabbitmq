@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<RootNamespace>RabbitClient</RootNamespace>
+		<PackageId>Letteral.Rabbitmq</PackageId>
+		<Version>1.1.0</Version>
+		<Description>Simple Wrapper over RabbitMQ.Client</Description>
+		<Authors>Muhammad Javad Qolami</Authors>
+		<PackageProjectUrl>https://github.com/MuhammedJavad/Letteral.Rabbitmq</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/MuhammedJavad/Letteral.Rabbitmq</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="RabbitMQ.Client" Version="6.2.4" />
+	</ItemGroup>
+</Project>
