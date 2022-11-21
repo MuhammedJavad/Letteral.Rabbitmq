@@ -51,7 +51,7 @@ class PersistentConnection : IPersistentConnection
     {
         if (!IsConnected)
         {
-            _logger.LogWarning("No RabbitMQ connections are available to perform this action. Trying to re-connect...");
+            _logger.LogError("No RabbitMQ connections are available to perform this action. Trying to re-connect...");
             TryConnect();
             //throw new InvalidOperationException("No RabbitMQ connections are available to perform this action");
         }
@@ -63,7 +63,7 @@ class PersistentConnection : IPersistentConnection
     {
         if (_disposed) return;
 
-        _logger.LogWarning("A RabbitMQ connection is shutdown. Trying to re-connect...");
+        _logger.LogError("A RabbitMQ connection is shutdown. Trying to re-connect...");
 
         TryConnect();
     }
@@ -72,7 +72,7 @@ class PersistentConnection : IPersistentConnection
     {
         if (_disposed) return;
 
-        _logger.LogWarning("A RabbitMQ connection throw exception. Trying to re-connect...");
+        _logger.LogError("A RabbitMQ connection throw exception. Trying to re-connect...");
 
         TryConnect();
     }
@@ -81,7 +81,7 @@ class PersistentConnection : IPersistentConnection
     {
         if (_disposed) return;
 
-        _logger.LogWarning("A RabbitMQ connection is on shutdown. Trying to re-connect...");
+        _logger.LogError("A RabbitMQ connection is on shutdown. Trying to re-connect...");
 
         TryConnect();
     }
