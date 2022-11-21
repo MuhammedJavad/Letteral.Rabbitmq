@@ -1,13 +1,12 @@
 using System;
 using RabbitMQ.Client;
 
-namespace RabbitClient.Connection
+namespace RabbitClient.Connection;
+
+public interface IPersistentConnection : IDisposable
 {
-    public interface IPersistentConnection : IDisposable
-    {
-        bool IsConnected { get; }
-        bool TryConnect();
-        bool CheckConnection();
-        IModel CreateChannel();
-    }
+    bool IsConnected { get; }
+    bool TryConnect();
+    bool CheckConnection();
+    IModel CreateChannel();
 }

@@ -5,33 +5,27 @@ using RabbitClient.Connection;
 using RabbitClient.Serialization;
 using RabbitClient.Subscription;
 
-namespace RabbitClient.DependencyInjection
+namespace RabbitClient.DependencyInjection;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static IServiceCollection AddRabbit(this IServiceCollection services, Action<RabbitOptions> setupAction)
     {
-        public static IServiceCollection AddRabbit(this IServiceCollection services, Action<RabbitOptions> setupAction)
-        {
-            if (services == null)
-                throw new ArgumentNullException(nameof(services));
-            if (setupAction == null)
-                throw new ArgumentNullException(nameof(setupAction));
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(setupAction);
+        services.Configure(setupAction);
+        return services.AddRabbit();
+    }
 
-            services.Configure(setupAction);
-            return services.AddRabbit();
-        }
-
-        public static IServiceCollection AddRabbit(this IServiceCollection services)
-        {
-            if (services == null)
-                throw new ArgumentNullException(nameof(services));
-            
-            services.AddSingleton<ISerializer, JsonSerializer>();
-            services.AddSingleton<PersistentConnectionManager>();
-            services.AddSingleton<ISubscriptionManager, MemorySubscriptionManager>();
-            services.AddScoped<IRabbit, Rabbit>();
-            services.AddSingleton<ISubscription, Subscription.Subscription>();
-            services.AddScoped<IAnnouncement, Announcement.Announcement>();
-            return services;
-        }
+    public static IServiceCollection AddRabbit(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        services.AddSingleton<IRabbitSerializer, JsonRabbitSerializer>();
+        services.AddSingleton<PersistentConnectionManager>();
+        services.AddSingleton<ISubscriptionManager, MemorySubscriptionManager>();
+        services.AddScoped<IRabbit, Rabbit>();
+        services.AddSingleton<ISubscription, Subscription.Subscription>();
+        services.AddScoped<IAnnouncement, Announcement.Announcement>();
+        return services;
     }
 }

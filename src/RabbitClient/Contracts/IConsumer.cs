@@ -1,10 +1,9 @@
 ﻿using RabbitMQ.Client.Events;
 using System.Threading.Tasks;
 
-namespace RabbitClient.Contracts
+namespace RabbitClient.Contracts;
+
+public interface IConsumer<in TEvent> where TEvent : class
 {
-    public interface IConsumer<in TEvent> where TEvent : class
-    {
-        Task Handle(TEvent request, BasicDeliverEventArgs eventArgs);
-    }
+    Task Handle(TEvent request, BasicDeliverEventArgs eventArgs);
 }

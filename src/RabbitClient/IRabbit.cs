@@ -1,15 +1,14 @@
 using RabbitClient.Contracts;
 
-namespace RabbitClient
+namespace RabbitClient;
+
+public interface IRabbit
 {
-    public interface IRabbit
-    {
-        bool Publish<TEvent>(EventDocument<TEvent> evt) where TEvent : class;
+    bool Publish<TEvent>(EventDocument<TEvent> evt) where TEvent : class;
 
-        bool Subscribe<TEvent, THandler>(AmqpModel metaData)
-            where TEvent : class
-            where THandler : IConsumer<TEvent>;
+    bool Subscribe<TEvent, THandler>(AmqpModel metaData)
+        where TEvent : class
+        where THandler : IConsumer<TEvent>;
 
-        bool Unsubscribe(AmqpModel metaData);
-    }
+    bool Unsubscribe(AmqpModel metaData);
 }
