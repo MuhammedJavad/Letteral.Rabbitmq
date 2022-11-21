@@ -3,7 +3,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<RootNamespace>RabbitClient</RootNamespace>
 		<PackageId>Letteral.Rabbitmq</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.1.6</Version>
 		<Description>Simple Wrapper over RabbitMQ.Client</Description>
 		<Authors>Muhammad Javad Qolami</Authors>
 		<PackageProjectUrl>https://github.com/MuhammedJavad/Letteral.Rabbitmq</PackageProjectUrl>
