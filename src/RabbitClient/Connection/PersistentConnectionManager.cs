@@ -39,6 +39,9 @@ class PersistentConnectionManager : IDisposable
             var conn = new ConnectionFactory
             {
                 Uri = new Uri(options.RabbitConnection),
+                UserName = options.UserName,
+                Password = options.Password,
+                VirtualHost = options.Vhost,
                 DispatchConsumersAsync = true,
                 UseBackgroundThreadsForIO = true
             };
