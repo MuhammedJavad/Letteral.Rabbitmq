@@ -19,14 +19,14 @@ namespace RabbitClient.Announcement;
 /// </summary>
 class Announcement : IAnnouncement
 {
+    private readonly ILogger _logger;
     private readonly RabbitOptions _options;
-    private readonly ILogger<Rabbit> _logger;
     private readonly PersistentConnectionManager _connectionManager;
     private readonly IRabbitSerializer _serialize;
     private readonly IModel _channel;
 
     public Announcement(
-        ILogger<Rabbit> logger,
+        ILogger logger,
         PersistentConnectionManager connectionManager,
         IRabbitSerializer serialize,
         IOptions<RabbitOptions> options)
@@ -48,7 +48,7 @@ class Announcement : IAnnouncement
 
     private bool TryDeclareExchangeForEvent(AmqpModel amqp)
     {
-        _logger.LogTrace($"Declaring RabbitMQ exchange. {amqp.GetExchangeName()} {amqp.GetExchangeType()}");
+        _logger.LogTrace("Declaring RabbitMQ exchange. {ExchangeName} {ExchangeType}", amqp.GetExchangeName(), amqp.GetExchangeType());
 
         try
         {

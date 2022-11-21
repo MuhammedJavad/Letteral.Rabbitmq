@@ -41,6 +41,12 @@ public readonly struct AmqpModel : IEquatable<AmqpModel>
 
         return new(BindingType.Fanout, string.Empty, queue, exchange);
     }
+    
+    public static AmqpModel DefaultExchange(string queue, string routingKey = default)
+    {
+        return Direct("", queue, routingKey);
+    }
+    
     public static AmqpModel Direct(string exchange, string queue, string routingKey = default)
     {
         if (string.IsNullOrWhiteSpace(exchange)) throw new ArgumentNullException(nameof(exchange));
@@ -49,6 +55,7 @@ public readonly struct AmqpModel : IEquatable<AmqpModel>
 
         return new(BindingType.Direct, routingKey, queue, exchange);
     }
+    
     public static AmqpModel Topic(string exchange, string queue, string routingKey)
     {
         if (string.IsNullOrWhiteSpace(exchange)) throw new ArgumentNullException(nameof(exchange));
