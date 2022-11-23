@@ -19,14 +19,14 @@ namespace RabbitClient.Announcement;
 /// </summary>
 class Announcement : IAnnouncement
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<Announcement> _logger;
     private readonly RabbitOptions _options;
     private readonly PersistentConnectionManager _connectionManager;
     private readonly IRabbitSerializer _serialize;
     private readonly IModel _channel;
 
     public Announcement(
-        ILogger logger,
+        ILogger<Announcement> logger,
         PersistentConnectionManager connectionManager,
         IRabbitSerializer serialize,
         IOptions<RabbitOptions> options)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -10,9 +11,9 @@ class PersistentConnectionManager : IDisposable
 {
     private readonly ImmutableArray<IPersistentConnection> _connections;
 
-    public PersistentConnectionManager(IOptions<RabbitOptions> options, ILogger logger)
+    public PersistentConnectionManager(IServiceProvider provider)
     {
-        _connections = CreateConnections(options.Value, logger);
+        _connections = CreateConnections(provider);
     }
 
     internal IPersistentConnection GetConnection(byte connectionType = 0)
@@ -27,29 +28,40 @@ class PersistentConnectionManager : IDisposable
         return _connections[0];
     }
 
-    private ImmutableArray<IPersistentConnection> CreateConnections(RabbitOptions options, ILogger logger)
+    private ImmutableArray<IPersistentConnection> CreateConnections(IServiceProvider provider)
     {
+        var options = provider.GetRequiredService<IOptions<RabbitOptions>>().Value;
+        var connectionFactory = CreateConnectionFactory();
         var connections = options.UseSecondaryConnectionForConsumers
             ? new[] { CreateConnection(), CreateConnection() }
             : new[] { CreateConnection() };
         return connections.ToImmutableArray();
 
+        ConnectionFactory CreateConnectionFactory()
+        {
+            var conn = string.IsNullOrWhiteSpace(options.RabbitConnection)
+                ? new ConnectionFactory
+                {
+                    HostName = options.HostName,
+                    UserName = options.UserName,
+                    Password = options.Password,
+                    VirtualHost = options.Vhost
+                }
+                : new ConnectionFactory() { Uri = new Uri(options.RabbitConnection) };
+            conn.DispatchConsumersAsync = true;
+            conn.UseBackgroundThreadsForIO = true;
+            return conn;
+        }
+        
         IPersistentConnection CreateConnection()
         {
-            var conn = new ConnectionFactory
-            {
-                Uri = new Uri(options.RabbitConnection),
-                UserName = options.UserName,
-                Password = options.Password,
-                VirtualHost = options.Vhost,
-                DispatchConsumersAsync = true,
-                UseBackgroundThreadsForIO = true
-            };
-            return new PersistentConnection(conn, logger);
+            var logger = provider.GetRequiredService<ILogger<PersistentConnection>>();
+            return new PersistentConnection(connectionFactory, logger);
         }
     }
 
     private bool _disposed;
+
     public void Dispose()
     {
         if (_disposed) return;

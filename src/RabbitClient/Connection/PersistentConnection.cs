@@ -8,12 +8,12 @@ namespace RabbitClient.Connection;
 class PersistentConnection : IPersistentConnection
 {
     private readonly IConnectionFactory _connectionFactory;
-    private readonly ILogger _logger;
+    private readonly ILogger<PersistentConnection> _logger;
     private readonly object _syncRoot = new();
     private IConnection _connection;
     private bool _disposed;
 
-    public PersistentConnection(IConnectionFactory connectionFactory, ILogger logger)
+    public PersistentConnection(IConnectionFactory connectionFactory, ILogger<PersistentConnection> logger)
     {
         _connectionFactory = connectionFactory;
         _logger = logger;
@@ -38,6 +38,7 @@ class PersistentConnection : IPersistentConnection
                 _logger.LogInformation(
                     "RabbitMQ Client acquired a persistent connection to '{HostName}' and is subscribed to failure events",
                     _connection.Endpoint.HostName);
+                
                 return true;
             }
             _logger.LogCritical("FATAL ERROR: RabbitMQ connections could not be created and opened");

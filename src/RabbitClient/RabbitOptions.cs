@@ -3,6 +3,7 @@ namespace RabbitClient;
 public class RabbitOptions
 {
     public string RabbitConnection { get; set; }
+    public string HostName { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
     public string Vhost { get; set; }

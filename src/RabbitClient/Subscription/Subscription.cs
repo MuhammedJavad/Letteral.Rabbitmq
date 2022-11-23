@@ -16,7 +16,7 @@ namespace RabbitClient.Subscription;
 class Subscription : ISubscription
 {
     private readonly RabbitOptions _options;
-    private readonly ILogger _logger;
+    private readonly ILogger<Subscription> _logger;
     private readonly PersistentConnectionManager _connectionManager;
     private readonly IServiceProvider _serviceResolver;
     private readonly ISubscriptionManager _subscriptionManager;
@@ -25,7 +25,7 @@ class Subscription : ISubscription
 
     public Subscription(
         IOptions<RabbitOptions> option,
-        ILogger logger,
+        ILogger<Subscription> logger,
         PersistentConnectionManager connectionManager,
         ISubscriptionManager subscriptionManager,
         IServiceProvider serviceResolver)
@@ -64,7 +64,9 @@ class Subscription : ISubscription
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Deleting queue returns an error", amqp);
+                _logger.LogError(e, 
+                    "Deleting queue returns an error. {QueueName}, {ExchangeName}, {RoutingKey}", 
+                    amqp.GetQueueName(), amqp.GetExchangeName(), amqp.GetRoutingKey());
                 return false;
             }
         }
@@ -105,7 +107,7 @@ class Subscription : ISubscription
         return true;
     }
 
-    private bool Subscribe(AmqpModel amqpModel, IAsyncEventingConsumer eventingConsumer)
+    private bool Subscribe(AmqpModel amqp, IAsyncEventingConsumer eventingConsumer)
     {
         lock (_channelSynchronizer)
         {
@@ -113,15 +115,16 @@ class Subscription : ISubscription
             {
                 _logger.LogTrace("Declare RabbitMQ Exchange and Queue");
 
-                _channel.DeclarePath(_options, amqpModel);
+                _channel.DeclarePath(_options, amqp);
 
-                _channel.BasicConsume(amqpModel.GetQueueName(), false, eventingConsumer);
+                _channel.BasicConsume(amqp.GetQueueName(), false, eventingConsumer);
 
                 return true;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Could not subscribe to the queue", amqpModel);
+                _logger.LogError(e, "Could not subscribe to the queue. {QueueName}, {ExchangeName}, {RoutingKey}", 
+                amqp.GetQueueName(), amqp.GetExchangeName(), amqp.GetRoutingKey());
                 return false;
             }
         }
