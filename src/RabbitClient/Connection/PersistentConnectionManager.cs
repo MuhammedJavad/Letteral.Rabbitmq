@@ -39,18 +39,15 @@ class PersistentConnectionManager : IDisposable
 
         ConnectionFactory CreateConnectionFactory()
         {
-            var conn = string.IsNullOrWhiteSpace(options.RabbitConnection)
-                ? new ConnectionFactory
-                {
-                    HostName = options.HostName,
-                    UserName = options.UserName,
-                    Password = options.Password,
-                    VirtualHost = options.Vhost
-                }
-                : new ConnectionFactory() { Uri = new Uri(options.RabbitConnection) };
-            conn.DispatchConsumersAsync = true;
-            conn.UseBackgroundThreadsForIO = true;
-            return conn;
+            return new ConnectionFactory
+            {
+                HostName = options.HostName,
+                UserName = options.UserName,
+                Password = options.Password,
+                VirtualHost = options.Vhost,
+                DispatchConsumersAsync = true,
+                UseBackgroundThreadsForIO = true
+            };
         }
         
         IPersistentConnection CreateConnection()
