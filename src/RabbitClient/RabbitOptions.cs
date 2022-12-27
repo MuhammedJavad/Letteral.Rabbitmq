@@ -9,6 +9,5 @@ public class RabbitOptions
     public bool AutoDelete { get; set; }
     public bool Durable { get; set; } = true;
     public bool Exclusive { get; set; }
-    public int RetryCount { get; set; } = 3;
     public bool UseSecondaryConnectionForConsumers { get; set; }
 }

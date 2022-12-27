@@ -36,7 +36,6 @@ public readonly struct AmqpModel : IEquatable<AmqpModel>
 
     public static AmqpModel FanOut(string exchange, string queue)
     {
-        if (string.IsNullOrWhiteSpace(exchange)) throw new ArgumentNullException(nameof(exchange));
         if (string.IsNullOrWhiteSpace(queue)) throw new ArgumentNullException(nameof(queue));
 
         return new(BindingType.Fanout, string.Empty, queue, exchange);
@@ -49,7 +48,6 @@ public readonly struct AmqpModel : IEquatable<AmqpModel>
     
     public static AmqpModel Direct(string exchange, string queue, string routingKey = default)
     {
-        if (string.IsNullOrWhiteSpace(exchange)) throw new ArgumentNullException(nameof(exchange));
         if (string.IsNullOrWhiteSpace(queue)) throw new ArgumentNullException(nameof(queue));
         if (string.IsNullOrWhiteSpace(routingKey)) routingKey = queue;
 
@@ -58,7 +56,6 @@ public readonly struct AmqpModel : IEquatable<AmqpModel>
     
     public static AmqpModel Topic(string exchange, string queue, string routingKey)
     {
-        if (string.IsNullOrWhiteSpace(exchange)) throw new ArgumentNullException(nameof(exchange));
         if (string.IsNullOrWhiteSpace(queue)) throw new ArgumentNullException(nameof(queue));
         if (string.IsNullOrWhiteSpace(routingKey)) throw new ArgumentNullException(nameof(routingKey));
 

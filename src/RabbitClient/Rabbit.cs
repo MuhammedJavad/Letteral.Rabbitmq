@@ -17,9 +17,14 @@ public class Rabbit : IRabbit
         _announcement = announcement;
     }
 
-    public bool Publish<TEvent>(EventDocument<TEvent> evt)
+    public void Publish<TEvent>(EventDocument<TEvent> evt)
         where TEvent : class =>
         _announcement.Publish(evt);
+
+    public bool PublishOverPolicies<TEvent>(EventDocument<TEvent> evt) where TEvent : class
+    {
+        throw new System.NotImplementedException();
+    }
 
     public bool Subscribe<TEvent, THandler>(AmqpModel metaData)
         where TEvent : class

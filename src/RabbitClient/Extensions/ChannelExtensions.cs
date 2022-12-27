@@ -14,6 +14,8 @@ static class ChannelExtensions
 
     public static void DeclareExchange(this IModel channel, RabbitOptions options, AmqpModel amqp)
     {
+        if (IsDefaultExchangeSelected(amqp)) return;
+        
         channel.ExchangeDeclare(
             exchange: amqp.GetExchangeName(),
             type: amqp.GetExchangeType(),
@@ -34,9 +36,13 @@ static class ChannelExtensions
 
     public static void BindQueue(this IModel channel, AmqpModel amqp)
     {
+        if (IsDefaultExchangeSelected(amqp)) return;
+        
         channel.QueueBind(
             amqp.GetQueueName(),
             amqp.GetExchangeName(),
             amqp.GetRoutingKey());
     }
+
+    private static bool IsDefaultExchangeSelected(AmqpModel amqp) => string.IsNullOrWhiteSpace(amqp.GetExchangeName());
 }

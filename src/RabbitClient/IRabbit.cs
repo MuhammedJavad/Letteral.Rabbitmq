@@ -4,8 +4,8 @@ namespace RabbitClient;
 
 public interface IRabbit
 {
-    bool Publish<TEvent>(EventDocument<TEvent> evt) where TEvent : class;
-
+    void Publish<TEvent>(EventDocument<TEvent> evt) where TEvent : class;
+    bool PublishOverPolicies<TEvent>(EventDocument<TEvent> evt) where TEvent : class;
     bool Subscribe<TEvent, THandler>(AmqpModel metaData)
         where TEvent : class
         where THandler : IConsumer<TEvent>;
