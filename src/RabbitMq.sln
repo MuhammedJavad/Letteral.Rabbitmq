@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitClient", "RabbitClient\RabbitClient.csproj", "{0C2C920B-0478-42A5-AD16-BA683CF6F8E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Letteral.Rabbitmq", "Letteral.Rabbitmq\Letteral.Rabbitmq.csproj", "{0C2C920B-0478-42A5-AD16-BA683CF6F8E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMq.IntegrationTest", "RabbitMq.IntegrationTest\RabbitMq.IntegrationTest.csproj", "{7ADC4408-E71F-449B-9C5A-662969678B36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Letteral.RabbitMq.IntegrationTest", "Letteral.RabbitMq.IntegrationTest\Letteral.RabbitMq.IntegrationTest.csproj", "{7ADC4408-E71F-449B-9C5A-662969678B36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "..\Samples\WebApplication\WebApplication.csproj", "{E41A4EA7-C91A-4879-852C-D288BE0F176E}"
 EndProject

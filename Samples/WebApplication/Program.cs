@@ -1,18 +1,18 @@
+using Letteral.Rabbitmq;
+using Letteral.Rabbitmq.Contracts;
+using Letteral.Rabbitmq.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
-using RabbitClient;
-using RabbitClient.Contracts;
-using RabbitClient.DependencyInjection;
+using WebApplication;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 builder.Services.AddRabbit(options =>
 {
-    options.HostName = "posapi.snappexpress.win";
-    options.Password = "P@ssw0rdN300";
-    options.UserName = "pos";
+    options.HostName = "***";
+    options.Password = "***";
+    options.UserName = "***";
     options.AutoDelete = false;
     options.Durable = true;
-    options.RetryCount = 3;
     options.UseSecondaryConnectionForConsumers = true;
 });
 
@@ -23,18 +23,29 @@ app.MapGet("/publish", ([FromServices] IRabbit rabbit) =>
     var msg = new Message();
     var amqp = AmqpModel.DefaultExchange("MyQueueName", "MyRoutingKey");
     var evt = EventDocument<Message>.New(msg, amqp);
-    return rabbit.Publish(evt);
+    try
+    {
+        rabbit.Publish(evt);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        throw;
+    }
 });
 
 app.Run();
 
 
-class Message
+namespace WebApplication
 {
-    public Message()
+    class Message
     {
-        Id = Guid.NewGuid();
-    }
+        public Message()
+        {
+            Id = Guid.NewGuid();
+        }
     
-    public Guid Id { get; set; }
+        public Guid Id { get; set; }
+    }
 }
